@@ -1,5 +1,7 @@
 package no.shoppifly;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +13,12 @@ public class ShoppingCartController {
     @Autowired
     private final CartService cartService;
 
-    public ShoppingCartController(CartService cartService) {
+    @Autowired
+    private MeterRegistry meterRegistry;
+
+    public ShoppingCartController(CartService cartService, MeterRegistry meterRegistry) {
         this.cartService = cartService;
+        this.meterRegistry = meterRegistry;
     }
 
     @GetMapping(path = "/cart/{id}")
@@ -25,8 +31,15 @@ public class ShoppingCartController {
      *
      * @return an order ID
      */
+    @Timed
     @PostMapping(path = "/cart/checkout")
     public String checkout(@RequestBody Cart cart) {
+        meterRegistry.counter("checkouts").increment();
+        meterRegistry.counter("carts").increment(-1);
+        Cart storedCart = cartService.getCart(cart.getId());
+        for (Item item : storedCart.getItems()) {
+            meterRegistry.counter("cartsvalue").increment(-1*(item.getUnitPrice()*item.getQty()));
+        }
         return cartService.checkout(cart);
     }
 
@@ -38,7 +51,12 @@ public class ShoppingCartController {
      */
     @PostMapping(path = "/cart")
     public Cart updateCart(@RequestBody Cart cart) {
-        return cartService.update(cart);
+        meterRegistry.counter("carts").increment();
+        Cart updatedCart = cartService.update(cart);
+        for (Item item : updatedCart.getItems()) {
+            meterRegistry.counter("cartsvalue").increment(item.getUnitPrice()*item.getQty());
+        }
+        return updatedCart;
     }
 
     /**
