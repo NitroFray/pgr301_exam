@@ -14,7 +14,9 @@ resource "aws_cloudwatch_dashboard" "main" {
         "metrics": [
           [
             "${var.candidate_id}",
-            "account_count.value"
+            "carts.value",
+            "cartsvalue.value",
+            "checkouts.count"
           ]
         ],
         "period": 300,
