@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "zerosum" {
+resource "aws_cloudwatch_metric_alarm" "greaterthan5" {
   alarm_name                = "carts-must-be-less-than-5"
   namespace                 = "1033"
   metric_name               = "carts.value"
@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "zerosum" {
 
   alarm_description         = "This alarm goes off as soon as the total amount of money in the bank exceeds 0"
   insufficient_data_actions = []
-  alarm_actions       = [aws_sns_topic.user_updates.arn]
+  alarm_actions       = [aws_sns_topic.alarms.arn]
 }
 
 resource "aws_sns_topic" "alarms" {
