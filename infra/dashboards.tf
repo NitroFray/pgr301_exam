@@ -69,10 +69,6 @@ resource "aws_cloudwatch_dashboard" "main" {
       "height": 6,
       "properties": {
         "metrics": [
-          [
-            "${var.candidate_id}",
-            "method.timed.avg"
-          ],
           [ { "expression": "SELECT AVG(\"method.timed.avg\") FROM \"1033\"", "label": "Average time per checkout", "id": "e1" } ]
         ],
         "period": 300,
