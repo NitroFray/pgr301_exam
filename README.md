@@ -9,7 +9,8 @@
 * _**Å release kode ofte kan også by på utfordringer. Beskriv hvilke- og hvordan vi kan bruke DevOps prinsipper til å redusere eller fjerne risiko ved hyppige leveraner.**_
   * Om man releaser kode ofte og det gjøres manuelt kan det være veldig tids-/resurskrevende. Det burde gjøres automatiske tester og releaser, og ha en rollback plan om noe ikke går etter planen.
 
-# TODO DEL 2 OPPG 3
+# Del 2 - CI
+**Oppgave 3)**
 * Ingen kan pushe kode direkte på main branch
 * Kode kan merges til main branch ved å lage en Pull request med minst en godkjenning
 * Kode kan merges til main bare når feature branchen som pull requesten er basert på,
