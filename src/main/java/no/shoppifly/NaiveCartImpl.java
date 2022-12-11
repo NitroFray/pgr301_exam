@@ -55,7 +55,6 @@ class NaiveCartImpl implements CartService, ApplicationListener<ApplicationReady
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         Gauge.builder("carts", shoppingCarts,
                 b -> b.values().size()).register(meterRegistry);
-        Gauge.builder("cartsvalue", total(),
-                b -> b).register(meterRegistry);
+        Gauge.builder("cartsvalue", this::total).register(meterRegistry);
     }
 }
